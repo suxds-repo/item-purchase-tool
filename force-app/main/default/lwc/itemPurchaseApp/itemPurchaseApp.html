@@ -1,3 +1,32 @@
 <template>
-    
+    <lightning-card title="Item Purchase Tool">
+
+        <div class="slds-m-around_medium">
+
+            <template if:true={account}>
+
+                <p>
+                    <b>Name:</b> {account.Name}
+                </p>
+
+                <p>
+                    <b>Number:</b> {account.AccountNumber}
+                </p>
+
+                <p>
+                    <b>Industry:</b> {account.Industry}
+                </p>
+
+            </template>
+
+            <template if:false={account}>
+                <lightning-spinner
+                    alternative-text="Loading..."
+                    size="medium">
+                </lightning-spinner>
+            </template>
+
+        </div>
+
+    </lightning-card>
 </template>
