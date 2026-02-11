@@ -1,131 +1,115 @@
 <template>
-    <lightning-card title="Item Purchase Tool">
-        <div class="slds-m-around_medium">
 
-            <!-- Account Info -->
-            <template if:true={account}>
-                <div class="slds-box slds-m-bottom_medium slds-theme_default">
-                    <p><b>Name:</b> {account.Name}</p>
-                    <p><b>Number:</b> {account.AccountNumber}</p>
-                    <p><b>Industry:</b> {account.Industry}</p>
-                </div>
-            </template>
-
-            <!-- Filters -->
-            <div class="slds-grid slds-gutters slds-m-bottom_medium">
-                <div class="slds-col">
-                    <lightning-input
-                        label="Search"
-                        placeholder="Search by Name or Description"
-                        onchange={handleSearch}>
-                    </lightning-input>
-                </div>
-                <div class="slds-col">
-                    <lightning-combobox
-                        label="Family"
-                        value={familyFilter}
-                        placeholder="Select Family"
-                        options={familyOptions}
-                        onchange={handleFamily}>
-                    </lightning-combobox>
-                </div>
-                <div class="slds-col">
-                    <lightning-combobox
-                        label="Type"
-                        value={typeFilter}
-                        placeholder="Select Type"
-                        options={typeOptions}
-                        onchange={handleType}>
-                    </lightning-combobox>
-                </div>
+    <!-- Top Header: Create Item | Account Info | Cart -->
+    <div class="slds-grid slds-grid_align-spread slds-p-around_small slds-border_bottom">
+        <lightning-button label="Create Item" variant="brand" onclick={openCreateModal}></lightning-button>
+        <template if:true={account}>
+            <div class="slds-text-heading_small slds-align-middle">
+                {account.Name} | {account.AccountNumber} | {account.Industry}
             </div>
+        </template>
+        <lightning-button label="Cart" variant="neutral" onclick={openCartModal}></lightning-button>
+    </div>
 
-            <!-- Count -->
-            <p class="slds-m-bottom_small"><b>Items found:</b> {items.length}</p>
+    <!-- Search + Filters -->
+    <div class="slds-grid slds-m-top_small slds-p-around_small">
+        <div class="slds-col slds-size_3-of-4 slds-p-right_small">
+            <lightning-input type="search" placeholder="Search by Name or Description" onchange={handleSearch}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-left_small slds-border_left">
+            <h3 class="slds-text-heading_small">Filters</h3>
+            <lightning-combobox label="Type" options={typeOptions} value={typeFilter} placeholder="--All--" onchange={handleType}></lightning-combobox>
+            <lightning-combobox label="Family" options={familyOptions} value={familyFilter} placeholder="--All--" onchange={handleFamily}></lightning-combobox>
+        </div>
+    </div>
 
-            <!-- Items List -->
-            <div class="slds-grid slds-wrap">
-                <template for:each={items} for:item="item">
-                    <div key={item.Id} class="slds-col slds-size_1-of-4 slds-p-around_small">
-                        <div class="slds-card slds-box slds-theme_default slds-shadow_medium slds-border_radius">
-                            <!-- Image -->
-                            <template if:true={item.Image__c}>
-                                <div class="slds-m-bottom_small" style="text-align:center;">
-                                    <img src={item.Image__c} alt={item.Name} style="max-width:100%; border-radius:8px;" />
-                                </div>
-                            </template>
+    <!-- Items Count -->
+    <div class="slds-p-horizontal_small slds-m-top_small">
+        <p><b>Items found:</b> {items.length}</p>
+    </div>
 
-                            <!-- Content -->
-                            <div class="slds-p-horizontal_small slds-p-vertical_x-small">
-                                <h3 class="slds-text-heading_small slds-m-bottom_x-small">{item.Name}</h3>
-                                <p class="slds-text-body_small slds-m-bottom_x-small">{item.Description__c}</p>
-                                <p><b>Price:</b> ${item.Price__c}</p>
-                                <p><b>Family:</b> {item.Family__c}</p>
-                                <p><b>Type:</b> {item.Type__c}</p>
+    <!-- Items Grid -->
+    <div class="slds-grid slds-wrap slds-p-around_small">
+        <template for:each={items} for:item="item">
+            <div key={item.Id} class="slds-col slds-size_1-of-4 slds-p-around_small">
+                <div class="slds-card slds-box slds-shadow_medium slds-border_radius">
+                    <!-- Image -->
+                    <template if:true={item.Image__c}>
+                        <div style="text-align:center; margin-bottom:0.5rem;">
+                            <img src={item.Image__c} alt={item.Name} style="max-width:100%; object-fit:cover; height:200px; border-radius:8px;"/>
+                        </div>
+                    </template>
 
-                                <!-- Details & Add buttons -->
-                                <div class="slds-m-top_small slds-grid slds-gutters_x-small">
-                                    <div class="slds-col">
-                                        <lightning-button
-                                            label="Details"
-                                            title="Details"
-                                            variant="brand"
-                                            onclick={handleDetails}
-                                            data-id={item.Id}>
-                                        </lightning-button>
-                                    </div>
-                                    <div class="slds-col">
-                                        <lightning-button
-                                            label="Add to Cart"
-                                            title="Add to Cart"
-                                            variant="neutral"
-                                            onclick={handleAddToCart}
-                                            data-id={item.Id}>
-                                        </lightning-button>
-                                    </div>
-                                </div>
+                    <!-- Item Info -->
+                    <div class="slds-p-horizontal_small slds-p-vertical_x-small">
+                        <h3 class="slds-text-heading_small slds-m-bottom_x-small">{item.Name}</h3>
+                        <p class="slds-text-body_small slds-m-bottom_x-small">{item.Description__c}</p>
+                        <p><b>Price:</b> ${item.Price__c}</p>
+                        <p><b>Family:</b> {item.Family__c}</p>
+                        <p><b>Type:</b> {item.Type__c}</p>
+
+                        <!-- Buttons -->
+                        <div class="slds-m-top_small slds-grid slds-gutters_x-small">
+                            <div class="slds-col">
+                                <lightning-button label="Details" variant="brand" data-id={item.Id} onclick={handleDetails}></lightning-button>
+                            </div>
+                            <div class="slds-col">
+                                <lightning-button label="Add" variant="neutral" data-id={item.Id} onclick={handleAddToCart}></lightning-button>
                             </div>
                         </div>
                     </div>
-                </template>
+                </div>
             </div>
-            
-            <!-- Modal for Item Details -->
-            <template if:true={showModal}>
-                <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
-                    <div class="slds-modal__container">
+        </template>
+    </div>
 
-                        <!-- Modal Header -->
-                        <header class="slds-modal__header">
-                            <h2 class="slds-text-heading_medium">{selectedItem.Name}</h2>
-                        </header>
+    <!-- Modal: Create Item -->
+    <template if:true={showCreateModal}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">Create New Item</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-input label="Name" name="Name" value={newItem.Name} onchange={handleNewItemChange}></lightning-input>
+                    <lightning-input label="Description" name="Description__c" value={newItem.Description__c} onchange={handleNewItemChange}></lightning-input>
+                    <lightning-combobox label="Family" name="Family__c" value={newItem.Family__c} options={familyOptions} onchange={handleNewItemChange}></lightning-combobox>
+                    <lightning-combobox label="Type" name="Type__c" value={newItem.Type__c} options={typeOptions} onchange={handleNewItemChange}></lightning-combobox>
+                    <lightning-input label="Price" type="number" name="Price__c" value={newItem.Price__c} onchange={handleNewItemChange}></lightning-input>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Cancel" variant="neutral" onclick={closeCreateModal}></lightning-button>
+                    <lightning-button label="Create" variant="brand" onclick={createNewItem}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
 
-                        <!-- Modal Body -->
-                        <div class="slds-modal__content slds-p-around_medium">
-                            <template if:true={selectedItem.Image__c}>
-                                <div style="text-align:center; margin-bottom:1rem;">
-                                    <img src={selectedItem.Image__c} alt={selectedItem.Name} style="max-width:100%; border-radius:8px;" />
-                                </div>
-                            </template>
-
-                            <p><b>Description:</b> {selectedItem.Description__c}</p>
-                            <p><b>Price:</b> ${selectedItem.Price__c}</p>
-                            <p><b>Family:</b> {selectedItem.Family__c}</p>
-                            <p><b>Type:</b> {selectedItem.Type__c}</p>
+    <!-- Modal: Details -->
+    <template if:true={showModal}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">{selectedItem.Name}</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <template if:true={selectedItem.Image__c}>
+                        <div style="text-align:center; margin-bottom:1rem;">
+                            <img src={selectedItem.Image__c} alt={selectedItem.Name} style="max-width:100%; border-radius:8px;" />
                         </div>
+                    </template>
+                    <p><b>Description:</b> {selectedItem.Description__c}</p>
+                    <p><b>Price:</b> ${selectedItem.Price__c}</p>
+                    <p><b>Family:</b> {selectedItem.Family__c}</p>
+                    <p><b>Type:</b> {selectedItem.Type__c}</p>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Close" variant="neutral" onclick={handleCloseModal}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
 
-                        <!-- Modal Footer -->
-                        <footer class="slds-modal__footer">
-                            <lightning-button label="Close" variant="neutral" onclick={handleCloseModal}></lightning-button>
-                        </footer>
-
-                    </div>
-                </section>
-
-                <!-- Modal Backdrop -->
-                <div class="slds-backdrop slds-backdrop_open"></div>
-            </template>
-
-        </div>
-    </lightning-card>
 </template>

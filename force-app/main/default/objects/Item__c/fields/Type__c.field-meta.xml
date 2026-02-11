@@ -10,23 +10,47 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
+                <fullName>Food</fullName>
+                <default>false</default>
+                <label>Food</label>
+            </value>
+            <value>
+                <fullName>Tech</fullName>
+                <default>false</default>
+                <label>Tech</label>
+            </value>
+            <value>
+                <fullName>Office</fullName>
+                <default>false</default>
+                <label>Office</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+            <value>
                 <fullName>A</fullName>
                 <default>false</default>
+                <isActive>false</isActive>
                 <label>A</label>
             </value>
             <value>
                 <fullName>B</fullName>
                 <default>false</default>
+                <isActive>false</isActive>
                 <label>B</label>
             </value>
             <value>
                 <fullName>C</fullName>
                 <default>false</default>
+                <isActive>false</isActive>
                 <label>C</label>
             </value>
             <value>
                 <fullName>D</fullName>
                 <default>false</default>
+                <isActive>false</isActive>
                 <label>D</label>
             </value>
         </valueSetDefinition>

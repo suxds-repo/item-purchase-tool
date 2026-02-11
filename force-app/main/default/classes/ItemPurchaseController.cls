@@ -18,7 +18,7 @@ public with sharing class ItemPurchaseController {
         ];
     }
     
-@AuraEnabled(cacheable=true)
+    @AuraEnabled(cacheable=true)
     public static List<Item__c> getItems(
         String family,
         String type,
@@ -50,4 +50,45 @@ public with sharing class ItemPurchaseController {
         return Database.query(query);
     }
     
+
+     
+    @AuraEnabled(cacheable=true)
+    public static List<String> getTypePicklistValues() {
+        Schema.DescribeFieldResult fieldResult = Item__c.Type__c.getDescribe();
+        List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
+        List<String> values = new List<String>();
+        for(Schema.PicklistEntry f : ple){
+            values.add(f.getValue());
+        }
+        return values;
+    }
+
+    
+    @AuraEnabled(cacheable=true)
+    public static List<String> getFamilyPicklistValues() {
+        Schema.DescribeFieldResult fieldResult = Item__c.Family__c.getDescribe();
+        List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
+        List<String> values = new List<String>();
+        for(Schema.PicklistEntry f : ple){
+            values.add(f.getValue());
+        }
+        return values;
+    }
+
+    @AuraEnabled
+    public static Item__c createItem(String name, String description, String family, String type, Decimal price) {
+        String imageUrl = UnsplashService.getImageUrl(name);
+
+        Item__c newItem = new Item__c(
+            Name = name,
+            Description__c = description,
+            Family__c = family,
+            Type__c = type,
+            Price__c = price,
+            Image__c = imageUrl
+        );
+        insert newItem;
+        return newItem;
+    }
 }
+
