@@ -1,0 +1,22 @@
+<template>
+    <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <h2 class="slds-text-heading_medium">Create New Item</h2>
+            </header>
+            <div class="slds-modal__content slds-p-around_medium">
+                <lightning-input label="Name" name="Name" value={newItem.Name} onchange={handleChange}></lightning-input>
+                <lightning-input label="Description" name="Description__c" value={newItem.Description__c} onchange={handleChange}></lightning-input>
+                <lightning-combobox label="Family" name="Family__c" value={newItem.Family__c} options={familyOptions} onchange={handleChange}></lightning-combobox>
+                <lightning-combobox label="Type" name="Type__c" value={newItem.Type__c} options={typeOptions} onchange={handleChange}></lightning-combobox>
+                <lightning-input label="Price" type="number" name="Price__c" value={newItem.Price__c} onchange={handleChange}></lightning-input>
+            </div>
+            <footer class="slds-modal__footer">
+                <lightning-button label="Cancel" variant="neutral" onclick={handleCancel}></lightning-button>
+                <lightning-button label="Create" variant="brand" onclick={handleCreate}></lightning-button>
+            </footer>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+
+</template>

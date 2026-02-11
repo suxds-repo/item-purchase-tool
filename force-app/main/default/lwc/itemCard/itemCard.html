@@ -1,0 +1,18 @@
+<template>
+    <div class="slds-card slds-box slds-shadow_medium slds-border_radius">
+        <template if:true={item.Image__c}>
+            <div style="text-align:center; margin-bottom:0.5rem;">
+                <img src={item.Image__c} alt={item.Name} style="max-width:100%; object-fit:cover; height:200px; border-radius:8px;" />
+            </div>
+        </template>
+        <div class="slds-p-horizontal_small slds-p-vertical_x-small">
+            <h3 class="slds-text-heading_small slds-m-bottom_x-small">{item.Name}</h3>
+            <p class="slds-text-body_small slds-m-bottom_x-small">{item.Description__c}</p>
+            <p><b>Price:</b> ${item.Price__c}</p>
+            <p><b>Family:</b> {item.Family__c}</p>
+            <p><b>Type:</b> {item.Type__c}</p>
+            <lightning-button label="Details" variant="brand" onclick={handleDetails}></lightning-button>
+        </div>
+    </div>
+
+</template>

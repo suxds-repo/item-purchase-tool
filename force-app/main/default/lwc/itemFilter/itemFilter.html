@@ -1,0 +1,13 @@
+<template>
+    <div class="slds-grid slds-m-top_small slds-p-around_small">
+        <div class="slds-col slds-size_3-of-4 slds-p-right_small">
+            <lightning-input type="search" placeholder="Search by Name or Description" onchange={handleSearch}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-p-left_small slds-border_left">
+            <h3 class="slds-text-heading_small">Filters</h3>
+            <lightning-combobox label="Type" options={typeOptions} value={type} placeholder="--All--" onchange={handleTypeChange}></lightning-combobox>
+            <lightning-combobox label="Family" options={familyOptions} value={family} placeholder="--All--" onchange={handleFamilyChange}></lightning-combobox>
+        </div>
+    </div>
+
+</template>
