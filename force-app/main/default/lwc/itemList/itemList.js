@@ -6,4 +6,8 @@ export default class ItemList extends LightningElement {
     handleDetails(event) {
         this.dispatchEvent(new CustomEvent('detailsclicked', { detail: event.detail }));
     }
+
+    handleAdd(event) {
+        this.dispatchEvent(new CustomEvent('addtocart', { detail: event.detail }));
+    }
 }

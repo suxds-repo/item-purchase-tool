@@ -5,8 +5,11 @@ import getItems from '@salesforce/apex/ItemPurchaseController.getItems';
 import getTypePicklistValues from '@salesforce/apex/ItemPurchaseController.getTypePicklistValues';
 import getFamilyPicklistValues from '@salesforce/apex/ItemPurchaseController.getFamilyPicklistValues';
 import createItem from '@salesforce/apex/ItemPurchaseController.createItem';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import checkoutCart from '@salesforce/apex/ItemPurchaseController.checkoutCart';
+import { NavigationMixin } from 'lightning/navigation';
 
-export default class ItemPurchaseApp extends LightningElement {
+export default class ItemPurchaseApp extends NavigationMixin(LightningElement) {
     @track accountId;
     @track account;
     @track items = [];
@@ -21,6 +24,18 @@ export default class ItemPurchaseApp extends LightningElement {
     @track showCreateModal = false;
     @track showDetailsModal = false;
     @track selectedItem;
+
+    @track cart = [];
+    @track showCartModal = false;
+
+
+
+    cartColumns = [
+        { label: 'Name', fieldName: 'Name' },
+        { label: 'Price', fieldName: 'Price__c', type: 'currency' },
+        { label: 'Family', fieldName: 'Family__c' },
+        { label: 'Type', fieldName: 'Type__c' }
+    ];
 
     @wire(CurrentPageReference)
     getStateParameters(pageRef) {
@@ -74,4 +89,71 @@ export default class ItemPurchaseApp extends LightningElement {
         this.showDetailsModal = false;
         this.selectedItem = null;
     }
+
+    handleAddToCart(event) {
+
+        const item = event.detail;
+
+        const exists = this.cart.find(i => i.Id === item.Id);
+
+        if (!exists) {
+            this.cart = [...this.cart, item];
+        }
+
+        this.dispatchEvent(
+            new ShowToastEvent({
+                title: 'Added to Cart',
+                message: item.Name + ' added',
+                variant: 'success'
+            })
+        );
+    }
+
+
+    openCartModal() {
+        this.showCartModal = true;
+    }
+
+    closeCartModal() {
+        this.showCartModal = false;
+    }
+
+
+
+    async handleCheckout() {
+
+        if (this.cart.length === 0) {
+            return;
+        }
+
+        try {
+
+            const itemIds = this.cart.map(i => i.Id);
+
+            const purchaseId = await checkoutCart({
+                accountId: this.accountId,
+                itemIds: itemIds
+            });
+
+
+            this.cart = [];
+            this.showCartModal = false;
+
+
+            // Redirect to Purchase record
+            this[NavigationMixin.Navigate]({
+                type: 'standard__recordPage',
+                attributes: {
+                    recordId: purchaseId,
+                    objectApiName: 'Purchase__c',
+                    actionName: 'view'
+                }
+            });
+
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
 }

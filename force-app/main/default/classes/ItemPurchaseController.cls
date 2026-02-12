@@ -90,5 +90,47 @@ public with sharing class ItemPurchaseController {
         insert newItem;
         return newItem;
     }
+
+
+    @AuraEnabled
+    public static Id checkoutCart(Id accountId, List<Id> itemIds) {
+
+        if (accountId == null || itemIds.isEmpty()) {
+            throw new AuraHandledException('Invalid cart data');
+        }
+
+        // Create Purchase
+        Purchase__c purchase = new Purchase__c(
+            ClientId__c = accountId
+        );
+
+        insert purchase;
+
+
+        // Get items
+        List<Item__c> items = [
+            SELECT Id, Price__c
+            FROM Item__c
+            WHERE Id IN :itemIds
+        ];
+
+
+        List<PurchaseLine__c> lines = new List<PurchaseLine__c>();
+
+        for (Item__c item : items) {
+
+            lines.add(new PurchaseLine__c(
+                PurchaseId__c = purchase.Id,
+                ItemId__c = item.Id,
+                Amount__c = 1,
+                UnitCost__c = item.Price__c
+            ));
+        }
+
+        insert lines;
+
+        return purchase.Id;
+    }
+
 }
 

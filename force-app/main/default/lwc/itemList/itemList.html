@@ -2,7 +2,8 @@
     <div class="slds-grid slds-wrap slds-p-around_small">
         <template for:each={items} for:item="item">
             <div key={item.Id} class="slds-col slds-size_1-of-4 slds-p-around_small">
-                <c-item-card item={item} ondetailsclicked={handleDetails}></c-item-card>
+                <c-item-card item={item} ondetailsclicked={handleDetails} onaddtocart={handleAdd}></c-item-card>
+                
             </div>
         </template>
     </div>

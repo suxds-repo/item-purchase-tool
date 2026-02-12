@@ -1,5 +1,5 @@
 <template>
-    <div class="slds-card slds-box slds-shadow_medium slds-border_radius">
+    <div class="slds-card slds-box slds-shadow_medium slds-border_radius card">
         <template if:true={item.Image__c}>
             <div style="text-align:center; margin-bottom:0.5rem;">
                 <img src={item.Image__c} alt={item.Name} style="max-width:100%; object-fit:cover; height:200px; border-radius:8px;" />
@@ -12,6 +12,7 @@
             <p><b>Family:</b> {item.Family__c}</p>
             <p><b>Type:</b> {item.Type__c}</p>
             <lightning-button label="Details" variant="brand" onclick={handleDetails}></lightning-button>
+            <lightning-button label="Add to Cart" variant="success" onclick={handleAdd}></lightning-button>
         </div>
     </div>
 
