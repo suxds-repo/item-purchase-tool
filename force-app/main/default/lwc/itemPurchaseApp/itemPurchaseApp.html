@@ -1,7 +1,9 @@
 <template>
     <!-- Header -->
     <div class="slds-grid slds-grid_align-spread slds-p-around_small slds-border_bottom">
-        <lightning-button label="Create Item" variant="brand" onclick={handleOpenCreateModal}></lightning-button>
+        <template if:true={isManager}>        
+            <lightning-button label="Create Item" variant="brand" onclick={handleOpenCreateModal}></lightning-button>
+        </template>
         <template if:true={account}>
             <div class="slds-text-heading_small slds-align-middle">
                 {account.Name} | {account.AccountNumber} | {account.Industry}

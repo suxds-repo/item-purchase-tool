@@ -8,6 +8,7 @@ import createItem from '@salesforce/apex/ItemPurchaseController.createItem';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import checkoutCart from '@salesforce/apex/ItemPurchaseController.checkoutCart';
 import { NavigationMixin } from 'lightning/navigation';
+import isCurrentUserManager from '@salesforce/apex/ItemPurchaseController.isCurrentUserManager';
 
 export default class ItemPurchaseApp extends NavigationMixin(LightningElement) {
     @track accountId;
@@ -36,6 +37,8 @@ export default class ItemPurchaseApp extends NavigationMixin(LightningElement) {
         { label: 'Family', fieldName: 'Family__c' },
         { label: 'Type', fieldName: 'Type__c' }
     ];
+
+    @track isManager = false;
 
     @wire(CurrentPageReference)
     getStateParameters(pageRef) {
@@ -155,5 +158,18 @@ export default class ItemPurchaseApp extends NavigationMixin(LightningElement) {
             console.error(error);
         }
     }
+
+    @wire(isCurrentUserManager)
+    wiredManager({ data, error }) {
+
+        if (data !== undefined) {
+            this.isManager = data;
+        }
+
+        if (error) {
+            console.error(error);
+        }
+    }
+
 
 }

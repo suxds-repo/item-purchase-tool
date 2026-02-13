@@ -79,6 +79,9 @@ public with sharing class ItemPurchaseController {
     public static Item__c createItem(String name, String description, String family, String type, Decimal price) {
         String imageUrl = UnsplashService.getImageUrl(name);
 
+        if (!isCurrentUserManager()) {
+            throw new AuraHandledException('Only managers can create items');
+        }
         Item__c newItem = new Item__c(
             Name = name,
             Description__c = description,
@@ -87,6 +90,8 @@ public with sharing class ItemPurchaseController {
             Price__c = price,
             Image__c = imageUrl
         );
+
+
         insert newItem;
         return newItem;
     }
@@ -131,6 +136,20 @@ public with sharing class ItemPurchaseController {
 
         return purchase.Id;
     }
+
+    @AuraEnabled(cacheable=true)
+    public static Boolean isCurrentUserManager() {
+
+        User u = [
+            SELECT IsManager__c
+            FROM User
+            WHERE Id = :UserInfo.getUserId()
+            LIMIT 1
+        ];
+
+        return u.IsManager__c;
+    }
+
 
 }
 
