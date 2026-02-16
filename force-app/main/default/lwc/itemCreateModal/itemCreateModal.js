@@ -1,5 +1,6 @@
 import { LightningElement, api, track } from 'lwc';
 import createItem from '@salesforce/apex/ItemPurchaseController.createItem';
+import ShowToastEvent from 'lightning/platformShowToastEvent';
 
 export default class ItemCreateModal extends LightningElement {
     @api familyOptions = [];
@@ -18,7 +19,15 @@ export default class ItemCreateModal extends LightningElement {
             price: parseFloat(this.newItem.Price__c)
         })
         .then(item => this.dispatchEvent(new CustomEvent('created', { detail: item })))
-        .catch(error => console.error(error));
+        .catch(error => {
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Error creating Item',
+                    message: error.body?.message || error.message,
+                    variant: 'error'
+                })
+            );
+        });
     }
 
     handleCancel() { this.dispatchEvent(new CustomEvent('canceled')); }

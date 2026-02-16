@@ -74,14 +74,31 @@ public with sharing class ItemPurchaseController {
         }
         return values;
     }
-
     @AuraEnabled
     public static Item__c createItem(String name, String description, String family, String type, Decimal price) {
-        String imageUrl = UnsplashService.getImageUrl(name);
 
         if (!isCurrentUserManager()) {
             throw new AuraHandledException('Only managers can create items');
         }
+
+        if (String.isBlank(name)) {
+            throw new AuraHandledException('Name is required.');
+        }
+
+        if (price == null || price <=0) {
+            throw new AuraHandledException('Price is required.');
+        }
+
+        if (String.isBlank(family)) {
+            throw new AuraHandledException('Family is required.');
+        }
+        if (String.isBlank(type)) {
+            throw new AuraHandledException('Type is required.');
+        }
+
+
+        String imageUrl = UnsplashService.getImageUrl(name);
+
         Item__c newItem = new Item__c(
             Name = name,
             Description__c = description,
@@ -91,10 +108,10 @@ public with sharing class ItemPurchaseController {
             Image__c = imageUrl
         );
 
-
         insert newItem;
         return newItem;
     }
+
 
 
     @AuraEnabled

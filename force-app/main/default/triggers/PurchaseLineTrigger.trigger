@@ -33,8 +33,8 @@ trigger PurchaseLineTrigger on PurchaseLine__c (
     List<AggregateResult> results = [
         SELECT
             PurchaseId__c purchaseId,
-            COUNT(Id) totalItems,
-            SUM(Amount__c) grandTotal
+            COUNT(Amount__c) totalItems,
+            SUM(LineTotal__c) grandTotal
         FROM PurchaseLine__c
         WHERE PurchaseId__c IN :purchaseIds
         GROUP BY PurchaseId__c
