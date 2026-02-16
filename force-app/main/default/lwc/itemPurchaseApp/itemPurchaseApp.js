@@ -126,6 +126,13 @@ export default class ItemPurchaseApp extends NavigationMixin(LightningElement) {
     async handleCheckout() {
 
         if (this.cart.length === 0) {
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Error',
+                    message: 'Cart is empty',
+                    variant: 'error'
+                })
+            );
             return;
         }
 

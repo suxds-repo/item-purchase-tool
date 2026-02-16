@@ -1,7 +1,6 @@
 import { LightningElement, api, track } from 'lwc';
 import createItem from '@salesforce/apex/ItemPurchaseController.createItem';
-import ShowToastEvent from 'lightning/platformShowToastEvent';
-
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 export default class ItemCreateModal extends LightningElement {
     @api familyOptions = [];
     @api typeOptions = [];
