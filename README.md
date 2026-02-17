@@ -1,18 +1,16 @@
-# Salesforce DX Project: Next Steps
+# Item Purchase Tool
 
-Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
+**Item Purchase Tool** is a Salesforce application for managing items and purchases.
 
-## How Do You Plan to Deploy Your Changes?
+## Key Features
+- Create and manage items with required fields: Name, Price, Family, and Type.  
+- Add items to a cart and complete purchases.  
+- Automatically calculate the purchase total and create purchase line items.  
+- Role-based access: managers can create and edit items.  
+- Integration with the Unsplash API to fetch images for items by name.  
+- Filter and search items by Family, Type, and keywords.  
+- Track changes in purchase lines using triggers.
 
-Do you want to deploy a set of changes, or create a self-contained application? Choose a [development model](https://developer.salesforce.com/tools/vscode/en/user-guide/development-models).
+All components are implemented using **Lightning Web Components (LWC)** and **Apex classes**.  
 
-## Configure Your Salesforce DX Project
-
-The `sfdx-project.json` file contains useful configuration information for your project. See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) in the _Salesforce DX Developer Guide_ for details about this file.
-
-## Read All About It
-
-- [Salesforce Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
-- [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
-- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
-- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
+Unit tests cover main scenarios: item creation, user role validation, checkout process, and error handling.
